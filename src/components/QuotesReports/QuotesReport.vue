@@ -35,6 +35,10 @@
 </template>
 
 <script>
+import {QuotesService} from '../../services/QuotesService.js'
+//import QuotesServices from '../../services/QuotesService.js';
+//import dataBaseUrl from '../../config.js'
+
 export default {
     data:() => ({
     title:'das',
@@ -65,12 +69,20 @@ export default {
     }),
 
     async mounted() {
-        const response = await fetch('http://192.168.137.207:5000/crm-api/quotes/pending');
-        this.primaryItems = await response.json();
-        console.log (this.primaryItems);
+       //const response = await fetch(dataBaseUrl);
+       //const response = await fetch('http://192.168.137.207:5000/crm-api/quotes/pending')
+       //const response = await fetch('http://192.168.137.207:5000/crm-api/quotes/sold')
+       //this.primaryItems = await response.json();
+
+       this.primaryItems = QuotesService.getJson2();
+       console.log (this.primaryItems);
+
+     // this.primaryItems = quoteService;
     },
     methods: {
         getPendingSales(){
+            this.primaryItems = QuotesService.getJson2();
+
             var currentItemsIndex=0;
             var index;
 
