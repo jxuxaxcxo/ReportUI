@@ -1,6 +1,5 @@
 <template>
-    <div>
-
+    <div id="quotesReportDiv">
         <h1 id="title">{{title}}</h1>
         <v-btn id= "pendingSaleButton"
         rounded = {true}
@@ -16,7 +15,7 @@
         <v-data-table id="generalTable"
           v-model="quoteSelected"
           :headers="primaryHeaders"
-          :items="currentItems"
+          :items="currentItems.length>0?currentItems:primaryItems"
           :single-select= true
           show-select
           :search="primarySearch"
@@ -27,7 +26,7 @@
         <v-card-title>Productos</v-card-title>
         <v-data-table id="secondTable"
           :headers="secondHeaders"
-          :items="quoteSelected.length>0?quoteSelected[0].qliList:yes"
+          :items="quoteSelected.length>0?quoteSelected[0].quoteListItems:yes"
           :sort-by="['price', 'quantity']"
           :sort-desc="[false, true]"
         ></v-data-table>
@@ -50,114 +49,14 @@ export default {
             sortable: false,
             value: 'quoteName',
           },
-          { text: 'Client', value: 'client.lastname' },
+          { text: 'Client', value: 'client.lastName' },
           { text: 'N.I.T.', value: 'client.ci' },
           { text: 'Date', value: 'date' },
         ],
 
-    primaryItems: [
-	{
-		quoteName: 'COT-001',
-		client: {
-			clientCode: 'MTR-300056',   
-            name: 'Mauricio',
-            lastname: 'Terceros',
-            ci: '7118795'
-        },
-		date: '2016/06/01',
-		sold: 'false',
-		qliList: [
-		{
-			product: {
-				productCode: 'COD-0001',
-                name: 'papa con queso'
-            },
-            price: 6,
-			quantity: 2
-        }, 
-        //more qliList items
-        {  	product: {
-				productCode: 'COD-0002',
-                name: 'Salchipapa'
-            },
-            price: 10,
-			quantity: 7} 
-        ]
-    },
-
-    {
-		quoteName: 'COT-002',
-		client: {
-			clientCode: 'MTR-s3dsada00056',   
-            name: 'Jimmy',
-            lastname: 'Jones',
-            ci: '71187dasd95'
-        },
-		date: '2016/ads06/01',
-		sold: 'false',
-		qliList: [
-		{
-			product: {
-				productCode: 'COD-0001',
-                name: 'chancho a la cruz'
-            },
-            price: 3,
-			quantity: 4
-        }, 
-        //more qliList items
-        {  	product: {
-				productCode: 'COD-0002',
-                name: 'Salchipapa'
-            },
-            price: 10,
-            quantity: 7
-        },
-        {
-			product: {
-				productCode: 'COD-0001',
-                name: 'chancho a la cruz'
-            },
-            price: 6,
-			quantity: 2
-        },  
-        ]
-    },
-
-    {
-		quoteName: 'COT-001',
-		client: {
-			clientCode: 'MTR-300056',   
-            name: 'Mauricio',
-            lastname: 'Terceros',
-            ci: '7118795'
-        },
-		date: '2016/06/01',
-		sold: 'true',
-		qliList: [
-		{
-			product: {
-				productCode: 'COD-0001',
-                name: 'papa con queso'
-            },
-            price: 4,
-			quantity: 3
-        }, 
-        //more qliList items
-        {  	product: {
-				productCode: 'COD-0002',
-                name: 'Salchipapa'
-            },
-            price: 10,
-			quantity: 7} 
-        ]
-    },
-    
-
-    //more Quotes items
-    ],
-
+      primaryItems: [],
       secondHeaders: [
-          { text: 'Producto', value:'product.productCode'},
+          { text: 'Producto', value:'product.code'},
           { text: 'Descripcion', value: 'product.name' },
           { text: 'Precio', value: 'price' },
           { text: 'Cantidad', value: 'quantity' },
@@ -165,6 +64,11 @@ export default {
 
     }),
 
+    async mounted() {
+        const response = await fetch('http://192.168.137.207:5000/crm-api/quotes/pending');
+        this.primaryItems = await response.json();
+        console.log (this.primaryItems);
+    },
     methods: {
         getPendingSales(){
             var currentItemsIndex=0;
@@ -217,7 +121,7 @@ export default {
 
     #title{
         position: absolute;
-        background-color: red;
+        background-color: #F67280;
         top: 85vh;
         left: 50vw;
     }
@@ -225,30 +129,36 @@ export default {
     #pendingSaleButton{
         position: absolute;
         background-color: red;
-        top:10vh;
+        top:80vh;
         left:30vw;
     }
     #soldButton{
         position: absolute;
         background-color: green;
-        top:10vh;
+        top:80vh;
         left:60vw;
     }
 
     #primaryCard{
         position: absolute;
-        top:30vh;
+        top:10vh;
         left: 5vw;
-        background-color: red;
+        background-color: #8552A0;
         height: 52vh;
         width: 45vw;
     }
     #secondCard{
         position: absolute;
-        top:30vh;
+        top:10vh;
         left: 52vw;
-        background-color: blue;
+        background-color: #06A10B;
         height: 52vh;
         width: 45vw;
+    }
+    #quotesReportDiv{
+        background-color: #ECECEC;
+        position: absolute;
+        height: 100vh;
+        width: 100vw;
     }
 </style>

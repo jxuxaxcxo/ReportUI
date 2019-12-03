@@ -1,6 +1,5 @@
 <template>
   <v-app>
-    
     <router-view></router-view>
     <Reports/>
   </v-app>
