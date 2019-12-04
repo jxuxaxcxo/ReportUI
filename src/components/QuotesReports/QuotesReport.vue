@@ -1,6 +1,10 @@
 <template>
     <div id="quotesReportDiv">
 
+      <v-btn  id='pendingSaleButton'
+      v-on:click="changeType('pending')">Pending</v-btn>
+        <v-btn id='soldButton' 
+      v-on:click="changeType('sold')">Sold</v-btn>
       <v-card id="primaryCard">
         <v-card-title>Cotizaciones</v-card-title>
         <v-data-table id="generalTable"
@@ -61,7 +65,9 @@ export default {
 
     async mounted() {
        //const response = await fetch(dataBaseUrl);
-       const response = await fetch('http://192.168.137.207:5000/crm-api/quotes/pending')
+        var type='sold';
+       const url = 'http://192.168.0.17:5000/crm-api/quotes/'+type;
+       const response = await fetch(url)
        this.primaryItems = await response.json();
 
        //this.primaryItems = QuotesService.getJson2();
@@ -69,7 +75,14 @@ export default {
 
      // this.primaryItems = quoteService;
     },
+
     methods: {
+        async changeType(type){
+             const url = 'http://192.168.0.17:5000/crm-api/quotes/'+type;
+             const response = await fetch(url)
+             this.primaryItems = await response.json();
+        },
+
         getPendingSales(){
             var currentItemsIndex=0;
             var index;
