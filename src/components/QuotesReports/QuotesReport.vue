@@ -1,14 +1,5 @@
 <template>
     <div id="quotesReportDiv">
-        <h1 id="title">{{title}}</h1>
-        <v-btn id= "pendingSaleButton"
-        rounded = {true}
-        v-on:click="getPendingSales()"
-        >Pending</v-btn>
-        <v-btn id="soldButton"
-        rounded = {true}
-        v-on:click="getSoldSales()"
-        >Sold</v-btn>
 
       <v-card id="primaryCard">
         <v-card-title>Cotizaciones</v-card-title>
@@ -35,7 +26,7 @@
 </template>
 
 <script>
-import {QuotesService} from '../../services/QuotesService.js'
+//import {QuotesService} from '../../services/QuotesService.js'
 //import QuotesServices from '../../services/QuotesService.js';
 //import dataBaseUrl from '../../config.js'
 
@@ -70,19 +61,16 @@ export default {
 
     async mounted() {
        //const response = await fetch(dataBaseUrl);
-       //const response = await fetch('http://192.168.137.207:5000/crm-api/quotes/pending')
-       //const response = await fetch('http://192.168.137.207:5000/crm-api/quotes/sold')
-       //this.primaryItems = await response.json();
+       const response = await fetch('http://192.168.137.207:5000/crm-api/quotes/pending')
+       this.primaryItems = await response.json();
 
-       this.primaryItems = QuotesService.getJson2();
+       //this.primaryItems = QuotesService.getJson2();
        console.log (this.primaryItems);
 
      // this.primaryItems = quoteService;
     },
     methods: {
         getPendingSales(){
-            this.primaryItems = QuotesService.getJson2();
-
             var currentItemsIndex=0;
             var index;
 
