@@ -21,7 +21,7 @@
         <v-card-title>Productos</v-card-title>
         <v-data-table id="secondTable"
           :headers="secondHeaders"
-          :items="quoteSelected.length>0?quoteSelected[0].quoteListItems:yes"
+          :items="quoteSelected.length>0?quoteSelected[0].quoteListItems:[]"
           :sort-by="['price', 'quantity']"
           :sort-desc="[false, true]"
         ></v-data-table>
@@ -30,9 +30,10 @@
 </template>
 
 <script>
-//import {QuotesService} from '../../services/QuotesService.js'
+//import {getJson2} from '../../services/QuotesService.js'
+import {getJson} from '../../services/QuotesService.js'
+
 //import QuotesServices from '../../services/QuotesService.js';
-//import dataBaseUrl from '../../config.js'
 
 export default {
     data:() => ({
@@ -64,16 +65,9 @@ export default {
     }),
 
     async mounted() {
-       //const response = await fetch(dataBaseUrl);
-        var type='sold';
-       const url = 'http://192.168.0.17:5000/crm-api/quotes/'+type;
-       const response = await fetch(url)
-       this.primaryItems = await response.json();
-
-       //this.primaryItems = QuotesService.getJson2();
+   
+       this.primaryItems = getJson();
        console.log (this.primaryItems);
-
-     // this.primaryItems = quoteService;
     },
 
     methods: {
