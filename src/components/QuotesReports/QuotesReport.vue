@@ -30,10 +30,8 @@
 </template>
 
 <script>
-//import {getJson2} from '../../services/QuotesService.js'
 import {getJson} from '../../services/QuotesService.js'
 
-//import QuotesServices from '../../services/QuotesService.js';
 
 export default {
     data:() => ({
@@ -64,15 +62,17 @@ export default {
 
     }),
 
-    async mounted() {
-   
+    async mounted() {   
        this.primaryItems = getJson();
-       console.log (this.primaryItems);
+       console.log(getJson());
+      //  const url = 'http://192.168.137.1:5000/crm-api/quotes/pending';
+      //  const response = await fetch(url)
+      //  this.primaryItems = await response.json();
     },
 
     methods: {
         async changeType(type){
-             const url = 'http://192.168.0.17:5000/crm-api/quotes/'+type;
+             const url = 'http://192.168.137.1:5000/crm-api/quotes/'+type;
              const response = await fetch(url)
              this.primaryItems = await response.json();
         },
