@@ -1,16 +1,24 @@
 
+import axios from 'axios'
 import Urls from '../config.js'
 
   export async function getPendingJson(){
-        const response = await fetch(Urls.pendingQuotesUrl)
-        const myJson = await response.json();
-        
-        return myJson;
- }
 
- export async function getSoldJson(){
-  const response = await fetch(Urls.soldQuotesUrl)
-  const myJson = await response.json();
+    return new Promise((resolve, reject) => {
+      axios.get(Urls.pendingQuotesUrl)
+        .then(response => { console.log('Get promise success '); resolve(response) })
+        .catch(error => { console.log('Get promise failed'); reject(error) })
+    })
+    
+  }
 
-  return myJson;
-}
+  export async function getSoldJson(){
+
+    return new Promise((resolve, reject) => {
+      axios.get(Urls.soldQuotesUrl)
+        .then(response => { console.log('Get promise success '); resolve(response) })
+        .catch(error => { console.log('Get promise failed'); reject(error) })
+    })
+    
+  }
+
