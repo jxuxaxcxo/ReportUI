@@ -1,41 +1,44 @@
 <template>
-    <div id="quotesReportDiv">
+    <div class="quotesReportDiv gray">
 
-      <v-btn  id='pendingSaleButton'
+      <v-btn  class='pendingSaleButton red ' 
       v-on:click="changeType('pending')">Pending</v-btn>
-        <v-btn id='soldButton' 
-      v-on:click="changeType('sold')">Sold</v-btn>
-      <v-card id="primaryCard">
-        <v-card-title>Cotizaciones</v-card-title>
-        <v-data-table id="generalTable"
-          v-model="quoteSelected"
-          :headers="primaryHeaders"
-          :items="currentItems.length>0?currentItems:primaryItems"
-          :single-select= true
-          show-select
-          :search="primarySearch"
-        ></v-data-table>
-      </v-card>
 
-      <v-card id="secondCard">
-        <v-card-title>Productos</v-card-title>
-        <v-data-table id="secondTable"
-          :headers="secondHeaders"
-          :items="quoteSelected.length>0?quoteSelected[0].quoteListItems:[]"
-          :sort-by="['price', 'quantity']"
-          :sort-desc="[false, true]"
-        ></v-data-table>
-      </v-card>
+      <v-btn class='soldButton green' 
+      v-on:click="changeType('sold')">Sold</v-btn>
+      
+        <v-card class="primaryCard purple ">
+            <v-card-title>Cotizaciones</v-card-title>
+            <v-data-table class="generalTable"
+            v-model="quoteSelected"
+            :headers="primaryHeaders"
+            :items="currentItems.length>0?currentItems:primaryItems"
+            :single-select= true
+            show-select
+            :search="primarySearch"
+            ></v-data-table>
+        </v-card>
+
+        <v-card class="secondCard blue">
+            <v-card-title>Productos</v-card-title>
+            <v-data-table class="secondTable "
+            :headers="secondHeaders"
+            :items="quoteSelected.length>0?quoteSelected[0].quoteListItems:[]"
+            :sort-by="['price', 'quantity']"
+            :sort-desc="[false, true]"
+            ></v-data-table>
+        </v-card>
     </div>
 </template>
 
 <script>
-import {getJson} from '../../services/QuotesService.js'
+import {getPendingJson} from '../../services/QuotesService.js'
+import {getSoldJson} from '../../services/QuotesService.js'
+
 
 
 export default {
     data:() => ({
-    title:'das',
      primarySearch: '',   
      pendingSalesOnly:true,
      quoteSelected:[],
@@ -63,46 +66,16 @@ export default {
     }),
 
     async mounted() {   
-       this.primaryItems = getJson();
-       console.log(getJson());
-      //  const url = 'http://192.168.137.1:5000/crm-api/quotes/pending';
-      //  const response = await fetch(url)
-      //  this.primaryItems = await response.json();
+       this.primaryItems = getPendingJson();
     },
 
     methods: {
         async changeType(type){
-             const url = 'http://192.168.137.1:5000/crm-api/quotes/'+type;
-             const response = await fetch(url)
-             this.primaryItems = await response.json();
-        },
-
-        getPendingSales(){
-            var currentItemsIndex=0;
-            var index;
-
-            for(index=0;index<this.primaryItems.length;index++){
-                if(this.primaryItems[index].sold=='false'){
-                    this.currentItems[currentItemsIndex] = this.primaryItems[index]
-                    currentItemsIndex++;
-                }
-            }
-            this.title = 'pending Sales Only';
-        },
-
-        getSoldSales(){
-            var currentItemsIndex=0;
-            var index;
-
-            for(index=0;index<this.primaryItems.length;index++){
-                if(this.primaryItems[index].sold=='true'){
-                    this.currentItems[currentItemsIndex] = this.primaryItems[index]
-                    currentItemsIndex++;
-                }
-            }
-            this.title = 'soldSalesOnly';
-        },
-
+            if(type=='pending')
+                this.primaryItems = getPendingJson();
+            else 
+                this.primaryItems = getSoldJson();
+        }
     }
   
 }
@@ -110,7 +83,7 @@ export default {
 
 <style scoped>
 
-    #generalTable{
+    .generalTable{
         position: absolute;
         top: 8vh;
         left: 1vw;
@@ -118,7 +91,7 @@ export default {
         width: 42.5vw;
     }
 
-    #secondTable{
+    .secondTable{
         position:absolute;
         top:8vh;
         left: 1vw;
@@ -126,44 +99,33 @@ export default {
         width: 42.5vw;
     }
 
-    #title{
-        position: absolute;
-        background-color: #F67280;
-        top: 85vh;
-        left: 50vw;
-    }
 
-    #pendingSaleButton{
+    .pendingSaleButton{
         position: absolute;
-        background-color: red;
         top:80vh;
         left:30vw;
     }
-    #soldButton{
+    .soldButton{
         position: absolute;
-        background-color: green;
         top:80vh;
         left:60vw;
     }
 
-    #primaryCard{
+    .primaryCard{
         position: absolute;
         top:10vh;
         left: 5vw;
-        background-color: #8552A0;
         height: 52vh;
         width: 45vw;
     }
-    #secondCard{
+    .secondCard{
         position: absolute;
         top:10vh;
         left: 52vw;
-        background-color: #06A10B;
         height: 52vh;
         width: 45vw;
     }
-    #quotesReportDiv{
-        background-color: #ECECEC;
+    .quotesReportDiv{
         position: absolute;
         height: 100vh;
         width: 100vw;

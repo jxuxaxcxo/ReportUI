@@ -1,7 +1,6 @@
 <template>
     <div>
         <QuotesReport/>
-
     </div>
 </template>
 

@@ -1,10 +1,16 @@
 
-//import Url from '../config.js'
+import Urls from '../config.js'
 
-  export async function getJson(){
-        const Url = 'http://192.168.137.1:5000/crm-api/quotes/pending'
-        const response = await fetch(Url)
+  export async function getPendingJson(){
+        const response = await fetch(Urls.pendingQuotesUrl)
         const myJson = await response.json();
-
+        
         return myJson;
-     }
+ }
+
+ export async function getSoldJson(){
+  const response = await fetch(Urls.soldQuotesUrl)
+  const myJson = await response.json();
+
+  return myJson;
+}
